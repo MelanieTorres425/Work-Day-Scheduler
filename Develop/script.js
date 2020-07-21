@@ -1,0 +1,84 @@
+// current date & time
+let currentHour = moment().hour();
+
+let date = new Date();
+let startingHour = date.getHours();
+
+function renderClock() {
+  $("#currentDay").text(moment().format("LLLL"));
+
+  if (currentHour > startingHour) {
+    updateTimeBlocks();
+  }
+}
+
+setInterval(renderClock, 1000);
+
+let addTimeBlock = "<div></div>";
+for (let i = 1; i <= 24; i++) {
+  let addHour = `${i} am`;
+  if (i == 12) {
+    addHour = `${i} pm`;
+  }
+  if (i > 12) {
+    addHour = `${i - 12} pm`;
+    if (i === 24) {
+      addHour = "12 am";
+    }
+  }
+
+  addTimeBlock += `<div class="row time-block"> 
+    <div class="col-2 hourCol" id="${i}">${addHour}</div>
+    <div class="col-9 textCol" id="input-${i}"><textarea id="input-${i}-text" style="width: 100%; border-left: 0px !important;"></textarea></div>
+    <div class="col-1 saveBtn" id="saveBtn-${i}" data-hour="${i}"><i class="fa fa-lock"></i></div>
+    </div>`;
+}
+
+$("#timeBlockContainer").append(addTimeBlock);
+
+updateTimeBlocks();
+getFromLocalStorage();
+
+// Color Coding
+function updateTimeBlocks() {
+  for (let i = 1; i <= 24; i++) {
+    $(`#input-${i}`).removeClass("past present future");
+
+    if (i < currentHour) {
+      $(`#input-${i}`).addClass("past");
+    }
+
+    $(`#input-${currentHour}`).addClass("present");
+
+    if (i > currentHour) {
+      $(`#input-${i}`).addClass("future");
+    }
+  }
+}
+
+// Save Button
+$(".saveBtn").click(function () {
+  let inputId = $(this).attr("data-hour");
+  let userInput = $(`#input-${inputId}-text`).val();
+  saveToLocalStorage(userInput, inputId);
+});
+
+let noteArray = [];
+function saveToLocalStorage(userInput, inputId) {
+  let noteObject = {
+    note: userInput,
+    hour: inputId,
+  };
+  noteArray.push(noteObject);
+  localStorage.setItem("notes", JSON.stringify(noteArray));
+}
+
+//local storage
+function getFromLocalStorage() {
+  if (localStorage.getItem("notes") !== null) {
+    let storageNotes = JSON.parse(window.localStorage.getItem("notes"));
+    for (let i = 0; i < storageNotes.length; i++) {
+      $(`#input-${storageNotes[i].hour}-text`).val(storageNotes[i].note);
+    }
+  }
+}
