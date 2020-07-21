@@ -65,8 +65,9 @@ textarea {
   color: white;
 }
 
-.saveBtn i:hover {
+.saveBtn:hover {
   font-size: 20px;
+  color: black;
   transition: all 0.3s ease-in-out;
 }
 
@@ -79,4 +80,8 @@ textarea {
 
 .textCol {
   padding: 10px;
+}
+
+.footer {
+  text-align: center;
 }
