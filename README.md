@@ -4,7 +4,7 @@ A simple calendar application that allows the user to save events for each hour 
 
 ## How it Works
 
-When the user opens the planner , they are able to see the day in 24 hour timeblocks. They are also able to click the event and edit and save new. If the time has passed the blocks will be the color grey if past, red if present, and green if future.
+When the user opens the planner , they are able to see the day in 24 hour timeblocks. They are also able to add events and edit. If the hour is in the past, the blocks will be the color grey, red if it is present, and green if in the future. Will save info in local storage , so you will be able to refresh and still keep your data.
 
 ## Technology
 
